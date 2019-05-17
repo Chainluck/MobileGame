@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform PlayerTransform;
+    public Transform GolemTransform;
     private Vector3 _cameraOffset;
     public float SmoothFactor = 0.5f;
     public bool LookAtPlayer = false;
@@ -13,19 +13,19 @@ public class CameraFollow : MonoBehaviour
     // called once when frame starts
     void Start()
     {
-        _cameraOffset = transform.position - PlayerTransform.position;
+        _cameraOffset = transform.position - GolemTransform.position;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        Vector3 newPosition = PlayerTransform.position + _cameraOffset;
+        Vector3 newPosition = GolemTransform.position + _cameraOffset;
 
         transform.position = Vector3.Slerp(transform.position, newPosition, SmoothFactor);
 
         if (LookAtPlayer)
         {
-            transform.LookAt(PlayerTransform);
+            transform.LookAt(GolemTransform);
         }
     }
 }
