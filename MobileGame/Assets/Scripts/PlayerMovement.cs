@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     //flag to check if the user has tapped / clicked.
@@ -8,15 +9,22 @@ public class PlayerMovement : MonoBehaviour
     private bool flag = false;
     //destination point
     private Vector3 endPoint;
-    //alter this to change the speed of the movement of player / gameobject
+    //alter this to change the speed of the movement of player / gameObject
     public float duration = 50.0f;
     //vertical position of the gameobject
     private float yAxis;
 
+
+    // Animation
+    Animator anim;
+
+
+
+
     void Start()
     {
         //save the y axis value of gameobject
-        yAxis = gameObject.transform.position.y;
+        yAxis = gameObject.transform.position.y; 
     }
 
     // Update is called once per frame
@@ -31,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
             Ray ray;
 
             ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+
 
             //Check if the ray hits any collider
             if (Physics.Raycast(ray, out hit))
@@ -47,14 +57,18 @@ public class PlayerMovement : MonoBehaviour
         //check if the flag for movement is true and the current gameobject position is not same as the clicked / tapped position
         if (flag && !Mathf.Approximately(gameObject.transform.position.magnitude, endPoint.magnitude))
         { 
-          //move the gameobject to the desired position
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, endPoint, 3 / (duration * (Vector3.Distance(gameObject.transform.position, endPoint))));
+            //move the gameobject to the desired position
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, endPoint, 1 / (duration * (Vector3.Distance(gameObject.transform.position, endPoint))));
+            // Lets rotate the player look direction when player changes direction
+            
+
+
         }
         //set the movement indicator flag to false if endPoint and current position are equal
         else if (flag && Mathf.Approximately(gameObject.transform.position.magnitude, endPoint.magnitude))
         {
             flag = false;
-            Debug.Log("I am here");
+            Debug.Log("Reached flag!");
         }
 
     }
