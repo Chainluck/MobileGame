@@ -22,15 +22,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        
-
-        //check if the screen is touched
+        //check if the screen is touched, declaring Stationary and Began touches also
         if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary || Input.touchCount < 0 && Input.GetTouch(0).phase == TouchPhase.Began)) 
         {
             //declare a variable of RaycastHit struct
             RaycastHit hit;
-            //Create a Ray on the tapped / clicked position
+            //Make ray for clicked position
             Ray ray;
 
             ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -53,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
           //move the gameobject to the desired position
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, endPoint, 3 / (duration * (Vector3.Distance(gameObject.transform.position, endPoint))));
         }
-        //set the movement indicator flag to false if the endPoint and current gameobject position are equal
+        //set the movement indicator flag to false if endPoint and current position are equal
         else if (flag && Mathf.Approximately(gameObject.transform.position.magnitude, endPoint.magnitude))
         {
             flag = false;
