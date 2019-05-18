@@ -13,18 +13,23 @@ public class PlayerMovement : MonoBehaviour
     public float duration = 50.0f;
     //vertical position of the gameobject
     private float yAxis;
-
-
     // Animation
     Animator anim;
-
-
-
+    //destination point for target
+    Vector3 targetPosition;
+    // destination point for "face direction" target
+    Vector3 lookAtTarget;
+    // How the player rotates
+    Quaternion playerRot;
+    // rotation speed
+    float rotSpeed = 100;
 
     void Start()
     {
         //save the y axis value of gameobject
-        yAxis = gameObject.transform.position.y; 
+         yAxis = gameObject.transform.position.y;
+
+
     }
 
     // Update is called once per frame
@@ -40,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
 
             ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
+            
+
 
 
             //Check if the ray hits any collider
@@ -52,6 +59,17 @@ public class PlayerMovement : MonoBehaviour
                 //as we do not want to change the y axis value based on touch position, reset it to original y axis value
                 endPoint.y = yAxis;
                 Debug.Log(endPoint);
+
+                targetPosition = hit.point;
+                //this.transform.LookAt(targetPosition);
+                //Assign positions for rotating
+                lookAtTarget = new Vector3(targetPosition.x - transform.position.x, transform.position.y, targetPosition.z - transform.position.z);
+                // When player taps the screen, "flag" target will be looked
+                playerRot = Quaternion.LookRotation(lookAtTarget);
+                // calling  void Move function
+                Move();
+
+
             }
         }
         //check if the flag for movement is true and the current gameobject position is not same as the clicked / tapped position
@@ -59,10 +77,6 @@ public class PlayerMovement : MonoBehaviour
         { 
             //move the gameobject to the desired position
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, endPoint, 1 / (duration * (Vector3.Distance(gameObject.transform.position, endPoint))));
-            // Lets rotate the player look direction when player changes direction
-            
-
-
         }
         //set the movement indicator flag to false if endPoint and current position are equal
         else if (flag && Mathf.Approximately(gameObject.transform.position.magnitude, endPoint.magnitude))
@@ -71,6 +85,11 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Reached flag!");
         }
 
+    }
+    //Using Slerp for handling the rotation
+    void Move()
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation, playerRot, rotSpeed * Time.deltaTime);
     }
 }
 
