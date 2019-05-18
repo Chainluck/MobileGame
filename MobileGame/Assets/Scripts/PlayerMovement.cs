@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
     {
         //save the y axis value of gameobject
          yAxis = gameObject.transform.position.y;
+        // Get Golem Animator
+        anim = GetComponent<Animator>();
 
 
     }
@@ -44,10 +46,6 @@ public class PlayerMovement : MonoBehaviour
             Ray ray;
 
             ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-
-            
-
-
 
             //Check if the ray hits any collider
             if (Physics.Raycast(ray, out hit))
@@ -66,10 +64,8 @@ public class PlayerMovement : MonoBehaviour
                 lookAtTarget = new Vector3(targetPosition.x - transform.position.x, transform.position.y, targetPosition.z - transform.position.z);
                 // When player taps the screen, "flag" target will be looked
                 playerRot = Quaternion.LookRotation(lookAtTarget);
-                // calling  void Move function
+                // calling  void Move -function
                 Move();
-
-
             }
         }
         //check if the flag for movement is true and the current gameobject position is not same as the clicked / tapped position
@@ -77,12 +73,15 @@ public class PlayerMovement : MonoBehaviour
         { 
             //move the gameobject to the desired position
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, endPoint, 1 / (duration * (Vector3.Distance(gameObject.transform.position, endPoint))));
+            //if player is running, set animation "Run" true
+            anim.SetBool("Run", true);
         }
         //set the movement indicator flag to false if endPoint and current position are equal
         else if (flag && Mathf.Approximately(gameObject.transform.position.magnitude, endPoint.magnitude))
         {
             flag = false;
             Debug.Log("Reached flag!");
+            anim.SetBool("Run", false);
         }
 
     }
