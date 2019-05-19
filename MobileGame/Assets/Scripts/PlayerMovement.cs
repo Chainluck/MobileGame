@@ -24,14 +24,14 @@ public class PlayerMovement : MonoBehaviour
     // rotation speed
     float rotSpeed = 100;
 
+
+
     void Start()
     {
         //save the y axis value of gameobject
          yAxis = gameObject.transform.position.y;
         // Get Golem Animator
         anim = GetComponent<Animator>();
-
-
     }
 
     // Update is called once per frame
@@ -56,16 +56,27 @@ public class PlayerMovement : MonoBehaviour
                 endPoint = hit.point;
                 //as we do not want to change the y axis value based on touch position, reset it to original y axis value
                 endPoint.y = yAxis;
+                // Debug some locations
                 Debug.Log(endPoint);
-
-                targetPosition = hit.point;
-                //this.transform.LookAt(targetPosition);
+                // Assigning rotation position to flag hit point
+                //targetPosition = hit.point;
                 //Assign positions for rotating
-                lookAtTarget = new Vector3(targetPosition.x - transform.position.x, transform.position.y, targetPosition.z - transform.position.z);
+                //lookAtTarget = new Vector3(0, hit.point.y, hit.point.z);
+
                 // When player taps the screen, "flag" target will be looked
-                playerRot = Quaternion.LookRotation(lookAtTarget);
+                //playerRot = Quaternion.LookRotation(lookAtTarget);
                 // calling  void Move -function
-                Move();
+                //Move();
+                
+                Vector3 lookAt = new Vector3(hit.point.x, 0.055f, hit.point.z);
+                transform.LookAt(lookAt);
+
+
+
+                //transform.LookAt(new Vector3(transform.rotation.x, hit.point.y, transform.rotation.z));
+
+                //transform.LookAt(new Vector3(hit.point.x, transform.rotation.x, hit.point.z));
+               // transform.rotation = Quaternion.Slerp(transform.rotation, playerRot, rotSpeed * Time.deltaTime);
             }
         }
         //check if the flag for movement is true and the current gameobject position is not same as the clicked / tapped position
@@ -81,14 +92,16 @@ public class PlayerMovement : MonoBehaviour
         {
             flag = false;
             Debug.Log("Reached flag!");
+            // set run animation to false
             anim.SetBool("Run", false);
         }
 
     }
     //Using Slerp for handling the rotation
-    void Move()
-    {
-        transform.rotation = Quaternion.Slerp(transform.rotation, playerRot, rotSpeed * Time.deltaTime);
-    }
+   //public void Move()
+    //{
+        // transform.rotation = Quaternion.Slerp(transform.rotation, playerRot, rotSpeed * Time.deltaTime);
+
+   // }
 }
 
