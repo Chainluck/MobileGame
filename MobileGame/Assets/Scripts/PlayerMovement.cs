@@ -15,15 +15,6 @@ public class PlayerMovement : MonoBehaviour
     private float yAxis;
     // Animation
     Animator anim;
-    //destination point for target
-    Vector3 targetPosition;
-    // destination point for "face direction" target
-    Vector3 lookAtTarget;
-    // How the player rotates
-    Quaternion playerRot;
-    // rotation speed
-    float rotSpeed = 100;
-
 
 
     void Start()
@@ -38,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         //check if the screen is touched, declaring Stationary and Began touches also
-        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary || Input.touchCount < 0 && Input.GetTouch(0).phase == TouchPhase.Began)) 
+        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)) 
         {
             //declare a variable of RaycastHit struct
             RaycastHit hit;
@@ -58,25 +49,10 @@ public class PlayerMovement : MonoBehaviour
                 endPoint.y = yAxis;
                 // Debug some locations
                 Debug.Log(endPoint);
-                // Assigning rotation position to flag hit point
-                //targetPosition = hit.point;
-                //Assign positions for rotating
-                //lookAtTarget = new Vector3(0, hit.point.y, hit.point.z);
-
-                // When player taps the screen, "flag" target will be looked
-                //playerRot = Quaternion.LookRotation(lookAtTarget);
-                // calling  void Move -function
-                //Move();
-                
+          
+                //Rotate character based on raycast hitpoints
                 Vector3 lookAt = new Vector3(hit.point.x, 0.055f, hit.point.z);
                 transform.LookAt(lookAt);
-
-
-
-                //transform.LookAt(new Vector3(transform.rotation.x, hit.point.y, transform.rotation.z));
-
-                //transform.LookAt(new Vector3(hit.point.x, transform.rotation.x, hit.point.z));
-               // transform.rotation = Quaternion.Slerp(transform.rotation, playerRot, rotSpeed * Time.deltaTime);
             }
         }
         //check if the flag for movement is true and the current gameobject position is not same as the clicked / tapped position
@@ -95,13 +71,6 @@ public class PlayerMovement : MonoBehaviour
             // set run animation to false
             anim.SetBool("Run", false);
         }
-
     }
-    //Using Slerp for handling the rotation
-   //public void Move()
-    //{
-        // transform.rotation = Quaternion.Slerp(transform.rotation, playerRot, rotSpeed * Time.deltaTime);
-
-   // }
 }
 
