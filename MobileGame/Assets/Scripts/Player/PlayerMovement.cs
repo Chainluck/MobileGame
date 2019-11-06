@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //flag to check if the user has tapped / clicked.
-    //Set to true on click. Reset to false on reaching destination
+    //Set to true on click. Reset to false on reaching point
     private bool flag = false;
     //destination point
     private Vector3 endPoint;
@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //declare a variable of RaycastHit struct
             RaycastHit hit;
-            //Make ray for clicked position
+            //Make ray for clicked position on screen
             Ray ray;
 
             ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
                 flag = true;
                 //save the click / tap position
                 endPoint = hit.point;
-                //as we do not want to change the y axis value based on touch position, reset it to original y axis value
+              
                 endPoint.y = yAxis;
                 // Debug some locations
                 Debug.Log(endPoint);
